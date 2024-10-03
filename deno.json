@@ -10,5 +10,14 @@
   },
   "lint": {
     "include": ["**/*.ts"]
+  },
+  "imports": {
+    "@dbushell/hyperless": "jsr:@dbushell/hyperless@^0.11.0",
+    "@ssr/velocirouter": "jsr:@ssr/velocirouter@^0.10.0",
+    "@std/crypto": "jsr:@std/crypto@^1.0.3",
+    "@std/encoding": "jsr:@std/encoding@^1.0.5",
+    "@std/fs": "jsr:@std/fs@^1.0.4",
+    "@std/http": "jsr:@std/http@^1.0.7",
+    "@std/path": "jsr:@std/path@^1.0.6"
   }
 }
