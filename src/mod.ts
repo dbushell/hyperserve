@@ -23,7 +23,6 @@ export class Hyperssr {
       origin: Deno.env.has('ORIGIN')
         ? new URL(Deno.env.get('ORIGIN')!)
         : undefined,
-      static: 'static',
       unhandledRejection: (error: PromiseRejectionEvent) => {
         error.preventDefault();
         console.error(error.reason);
@@ -67,6 +66,11 @@ export class Hyperssr {
     return this.options.origin;
   }
 
+  get hypermore(): Hypermore {
+    if (!this.initialized) throw new Error('Not initalized');
+    return this.#hypermore;
+  }
+
   get router(): Router {
     if (!this.initialized) throw new Error('Not initialized');
     return this.#router;
@@ -104,12 +108,16 @@ export class Hyperssr {
         Date.now().toString()
     );
 
+    // Create manifest
     this.#manifest = {
       deployHash,
       routes: []
     };
 
-    // this.#hypermore = new Hypermore({});
+    // Setup preprocessor
+    this.#hypermore = new Hypermore();
+
+    // Setup route
     this.#router = new VelociRouter<Platform>({
       onError: (error) => {
         console.log(error);
@@ -117,11 +125,13 @@ export class Hyperssr {
       }
     });
 
+    // Setup middleware
     const builtin = [
+      middleware.template,
       middleware.proxy,
       middleware.static,
-      // middleware.manifest,
-      // middleware.redirect,
+      middleware.manifest,
+      middleware.redirect,
       middleware.cache,
       middleware.policy
     ];
@@ -147,6 +157,7 @@ export class Hyperssr {
       }
     );
 
+    // Cleanup server
     this.server.finished.then(() => {
       globalThis.removeEventListener(
         'unhandledrejection',

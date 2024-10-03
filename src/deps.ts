@@ -1,1 +1,1 @@
-export {Hypermore} from '../../hypermore/mod.ts';
+export {componentName, Hypermore} from '../../hypermore/mod.ts';

@@ -1,5 +1,5 @@
-import {requestMap} from './shared.ts';
 import type {Hyperssr} from '../mod.ts';
+import {requestMap} from './shared.ts';
 
 export default (server: Hyperssr) => {
   const input = new URLPattern({pathname: '/_/immutable/*'});

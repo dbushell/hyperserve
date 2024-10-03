@@ -1,15 +1,12 @@
+import type {Hyperssr} from '../mod.ts';
 import * as path from '@std/path';
 import {existsSync} from '@std/fs';
 import {serveDir} from '@std/http/file-server';
-import type {Hyperssr} from '../mod.ts';
 
 export default (server: Hyperssr) => {
-  if (!server.options.static) {
-    return;
-  }
-  const staticDir = path.resolve(server.dir, server.options.static);
+  const staticDir = path.resolve(server.dir, 'static');
   if (!existsSync(staticDir)) {
-    console.warn(`Missing static directory: ${staticDir}`);
+    console.warn(`Missing static directory: "${staticDir}"`);
     return;
   }
   server.router.get(new URLPattern({}), async ({request}) => {

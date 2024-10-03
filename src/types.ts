@@ -1,5 +1,9 @@
 import type {Cookie} from '@std/http/cookie';
-import type {Handle as VHandle, Router as VRouter} from '@ssr/velocirouter';
+import type {
+  Handle as VHandle,
+  Method,
+  Router as VRouter
+} from '@ssr/velocirouter';
 
 /** Cookie map */
 export type CookieMap = Map<string, Cookie>;
@@ -24,15 +28,21 @@ export type Options = {
   dev?: boolean;
   origin?: URL;
   serve?: Deno.ServeOptions;
-  static?: string;
   rejectionHandled?: (error: PromiseRejectionEvent) => void;
   unhandledRejection?: (error: PromiseRejectionEvent) => void;
 };
 
+/** Hyperssr render */
+export type Render = (
+  ...args: Parameters<Handle>
+) => ReturnType<Handle> | Promise<ReturnType<Handle>>;
+
 /** Hyperssr route */
 export type Route = {
   hash: string;
+  method: Method;
   pattern: string;
+  render: Render;
   order?: number;
 };
 

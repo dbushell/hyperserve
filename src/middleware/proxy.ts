@@ -1,5 +1,5 @@
-import {requestMap} from './shared.ts';
 import type {Hyperssr} from '../mod.ts';
+import {requestMap} from './shared.ts';
 
 export default (server: Hyperssr) => {
   server.router.use(({request, response, stopPropagation}) => {
