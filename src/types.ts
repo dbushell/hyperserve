@@ -1,9 +1,6 @@
 import type {Cookie} from '@std/http/cookie';
-import type {
-  Handle as VHandle,
-  Method,
-  Router as VRouter
-} from '@ssr/velocirouter';
+import type * as VelociRouter from '@ssr/velocirouter';
+import type {Props} from '@dbushell/hypermore';
 
 /** Cookie map */
 export type CookieMap = Map<string, Cookie>;
@@ -13,14 +10,14 @@ export type Platform = {
   info: Deno.ServeHandlerInfo;
   cookies: CookieMap;
   deployHash: string;
-  platformProps: Record<string, unknown>;
+  globalProps: Props;
 };
 
 /** Router handle */
-export type Handle = VHandle<Platform>;
+export type Handle = VelociRouter.Handle<Platform>;
 
 /** Router instance */
-export type Router = VRouter<Platform>;
+export type Router = VelociRouter.Router<Platform>;
 
 /** Hyperssr instance options */
 export type Options = {
@@ -37,13 +34,27 @@ export type Render = (
   ...args: Parameters<Handle>
 ) => ReturnType<Handle> | Promise<ReturnType<Handle>>;
 
+/** Hyperssr route load props */
+export type RouteLoadProps = Platform & {
+  fetch: typeof fetch;
+  params?: Record<string, string | undefined>;
+  request: Request;
+};
+
+/** Hyperssr route module */
+export type RouteModule = {
+  pattern?: string;
+  load?: (props: RouteLoadProps) => Promise<Response | void>;
+};
+
 /** Hyperssr route */
 export type Route = {
   hash: string;
-  method: Method;
+  method: VelociRouter.Method;
   pattern: string;
   render: Render;
   order?: number;
+  load?: (props: RouteLoadProps) => Promise<Response | void>;
 };
 
 /** Hyperssr manifest */

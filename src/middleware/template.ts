@@ -1,7 +1,7 @@
 import type {Hyperssr} from '../mod.ts';
 import * as fs from '@std/fs';
 import * as path from '@std/path';
-import {componentName} from '../deps.ts';
+import {componentName} from '@dbushell/hypermore';
 
 export default async (server: Hyperssr) => {
   const componentDir = path.resolve(server.dir, 'components');

@@ -1,7 +1,9 @@
-import type {Route} from '../types.ts';
+import type {Route, RouteLoadProps} from '../types.ts';
 import type {Hyperssr} from '../mod.ts';
 import * as fs from '@std/fs';
 import * as path from '@std/path';
+import {importRoute} from '../routes.ts';
+import {serverFetch} from '../fetch.ts';
 
 export default async (server: Hyperssr) => {
   const routeDir = path.resolve(server.dir, 'routes');
@@ -28,19 +30,51 @@ export default async (server: Hyperssr) => {
       pattern += path.basename(entry.path, path.extname(entry.path));
     }
     const html = await Deno.readTextFile(entry.path);
+    const mod = await importRoute(html);
+    if (mod.pattern) {
+      if (/^\.\w+$/.test(mod.pattern)) {
+        pattern += mod.pattern;
+      } else {
+        pattern = path.join(pattern, mod.pattern);
+      }
+    }
+    const render: Route['render'] = async ({request, match, platform}) => {
+      // Setup context and props
+      // const url = new URL(request.url);
+      const params = match?.pathname?.groups ?? {};
+      const loadProps: RouteLoadProps = {
+        ...platform,
+        fetch: serverFetch(request, server.router, platform),
+        params: structuredClone(params),
+        request
+      };
+      Object.freeze(loadProps);
+      const loadResponse = mod.load ? await mod.load(loadProps) : {};
+      if (loadResponse instanceof Response) {
+        return {
+          response: loadResponse.status === 404 ? undefined : loadResponse
+        };
+      }
+      const headers = new Headers();
+      headers.set('content-type', 'text/html; charset=utf-8');
+      /** @todo pass url, pattern, and params? */
+      const render = await server.hypermore.render(
+        html,
+        {},
+        {
+          globalProps: {
+            deployHash: platform.deployHash,
+            ...platform.globalProps
+          }
+        }
+      );
+      return new Response(render, {headers});
+    };
     const route: Route = {
       hash,
       pattern,
-      method: 'GET',
-      render: async ({platform}) => {
-        /** @todo load function? */
-        const headers = new Headers();
-        headers.set('content-type', 'text/html; charset=utf-8');
-        const render = await server.hypermore.render(html, {
-          globalProps: {deployHash: platform.deployHash}
-        });
-        return new Response(render, {headers});
-      }
+      render,
+      method: 'GET'
     };
     server.manifest.routes.push(route);
     const input = new URLPattern({pathname: route.pattern});

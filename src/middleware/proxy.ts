@@ -23,19 +23,6 @@ export default (server: Hyperssr) => {
         server.origin.protocol !== base.protocol
       ) {
         stopPropagation();
-        // Add redirect for Deno Deploy
-        if (
-          Deno.env.has('DENO_REGION') &&
-          base.hostname.endsWith('.deno.dev')
-        ) {
-          base.hostname = server.origin.hostname;
-          return new Response(null, {
-            status: 308,
-            headers: {
-              location: base.href
-            }
-          });
-        }
         return new Response(null, {status: 404});
       }
     }

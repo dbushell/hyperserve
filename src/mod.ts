@@ -1,7 +1,7 @@
 import type {Manifest, Options, Platform, Router} from './types.ts';
 import {Router as VelociRouter} from '@ssr/velocirouter';
+import {Hypermore} from '@dbushell/hypermore';
 import * as path from '@std/path';
-import {Hypermore} from './deps.ts';
 import Cookies from './cookies.ts';
 import {encodeHash} from './utils.ts';
 import * as middleware from './middleware/mod.ts';
@@ -132,7 +132,6 @@ export class Hyperssr {
       middleware.static,
       middleware.manifest,
       middleware.redirect,
-      middleware.cache,
       middleware.policy
     ];
     for (const callback of builtin) {
@@ -148,7 +147,7 @@ export class Hyperssr {
           info,
           cookies,
           deployHash: this.deployHash,
-          platformProps: {}
+          globalProps: {}
         };
         Object.freeze(platform);
         const response = await this.router.handle(request, platform);
