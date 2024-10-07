@@ -1,9 +1,9 @@
-import type {Hyperssr} from '../mod.ts';
+import type {Hyperserve} from '../mod.ts';
 import {requestMap} from './shared.ts';
 
 const ignore = new Set(['/', '/404', '/500']);
 
-export default (server: Hyperssr) => {
+export default (server: Hyperserve) => {
   // Possible routes for auto redirects
   const redirects = new Set<string>();
   for (const route of server.manifest.routes) {

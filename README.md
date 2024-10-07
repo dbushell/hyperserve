@@ -1,8 +1,8 @@
-# HyperSsr
+# 🦕 Hyperserve
 
 Experimental web framework.
 
-Built with [Hypermore](https://github.com/dbushell/hypermore) and [Hyperless](https://github.com/dbushell/hyperless).
+Built with [Hypermore](https://github.com/dbushell/hypermore) and [Hyperless](https://github.com/dbushell/hyperless), and [VelociRouter](https://github.com/dbushell/velocirouter).
 
 * * *
 

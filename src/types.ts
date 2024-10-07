@@ -19,7 +19,7 @@ export type Handle = VelociRouter.Handle<Platform>;
 /** Router instance */
 export type Router = VelociRouter.Router<Platform>;
 
-/** Hyperssr instance options */
+/** Hyperserve instance options */
 export type Options = {
   deployHash?: string;
   dev?: boolean;
@@ -29,25 +29,25 @@ export type Options = {
   unhandledRejection?: (error: PromiseRejectionEvent) => void;
 };
 
-/** Hyperssr render */
+/** Hyperserve render */
 export type Render = (
   ...args: Parameters<Handle>
 ) => ReturnType<Handle> | Promise<ReturnType<Handle>>;
 
-/** Hyperssr route load props */
+/** Hyperserve route load props */
 export type RouteLoadProps = Platform & {
   fetch: typeof fetch;
   params?: Record<string, string | undefined>;
   request: Request;
 };
 
-/** Hyperssr route module */
+/** Hyperserve route module */
 export type RouteModule = {
   pattern?: string;
   load?: (props: RouteLoadProps) => Promise<Response | void>;
 };
 
-/** Hyperssr route */
+/** Hyperserve route */
 export type Route = {
   hash: string;
   method: VelociRouter.Method;
@@ -57,7 +57,7 @@ export type Route = {
   load?: (props: RouteLoadProps) => Promise<Response | void>;
 };
 
-/** Hyperssr manifest */
+/** Hyperserve manifest */
 export type Manifest = {
   deployHash: string;
   routes: Array<Route>;

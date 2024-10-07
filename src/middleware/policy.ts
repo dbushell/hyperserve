@@ -1,4 +1,4 @@
-import type {Hyperssr} from '../mod.ts';
+import type {Hyperserve} from '../mod.ts';
 import {requestMap} from './shared.ts';
 
 const defaultPolicies = {
@@ -42,7 +42,7 @@ const getPolicies = (response: Response) => {
   return csp;
 };
 
-export default (server: Hyperssr) => {
+export default (server: Hyperserve) => {
   server.router.all(new URLPattern({}), ({request, response}) => {
     try {
       if (requestMap.get(request)?.ignore) return response;

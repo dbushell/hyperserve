@@ -6,7 +6,7 @@ import Cookies from './cookies.ts';
 import {encodeHash} from './utils.ts';
 import * as middleware from './middleware/mod.ts';
 
-export class Hyperssr {
+export class Hyperserve {
   #initialized = false;
   #dir: string;
   #hypermore!: Hypermore;

@@ -1,11 +1,11 @@
 import type {Route, RouteLoadProps} from '../types.ts';
-import type {Hyperssr} from '../mod.ts';
+import type {Hyperserve} from '../mod.ts';
 import * as fs from '@std/fs';
 import * as path from '@std/path';
 import {importRoute} from '../routes.ts';
 import {serverFetch} from '../fetch.ts';
 
-export default async (server: Hyperssr) => {
+export default async (server: Hyperserve) => {
   const routeDir = path.resolve(server.dir, 'routes');
   if (fs.existsSync(routeDir) === false) {
     console.warn(`Missing routes directory: "${routeDir}"`);

@@ -1,7 +1,7 @@
-import type {Hyperssr} from '../mod.ts';
+import type {Hyperserve} from '../mod.ts';
 import {requestMap} from './shared.ts';
 
-export default (server: Hyperssr) => {
+export default (server: Hyperserve) => {
   server.router.use(({request, response, stopPropagation}) => {
     if (requestMap.get(request)?.ignore) return response;
     if (request.headers.get('upgrade') === 'websocket') {
