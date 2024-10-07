@@ -1,8 +1,10 @@
-# 🦕 Hyperserve
+# 🛸 Hyperserve
 
 Experimental web framework.
 
-Built with [Hypermore](https://github.com/dbushell/hypermore) and [Hyperless](https://github.com/dbushell/hyperless), and [VelociRouter](https://github.com/dbushell/velocirouter).
+⚠️ **Work in progress!** ⚠️
+
+Built with [Hyperless](https://github.com/dbushell/hyperless), [Hypermore](https://github.com/dbushell/hypermore), and [VelociRouter](https://github.com/dbushell/velocirouter). Successor to [DinoSsr](https://github.com/dbushell/dinossr).
 
 * * *
 
