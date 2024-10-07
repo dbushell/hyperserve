@@ -3,7 +3,10 @@ import {requestMap} from './shared.ts';
 
 const ignore = new Set(['/', '/404', '/500']);
 
-export default (server: Hyperserve) => {
+/**
+ * Middleware to handle auto redirects
+ */
+export default (server: Hyperserve): void => {
   // Possible routes for auto redirects
   const redirects = new Set<string>();
   for (const route of server.manifest.routes) {

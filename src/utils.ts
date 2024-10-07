@@ -23,4 +23,4 @@ export const encodeCrypto = async (
 export const encodeCryptoBase64 = async (
   value: string,
   algorithm?: DigestAlgorithm
-) => encodeBase64(await encodeCrypto(value, algorithm));
+): Promise<string> => encodeBase64(await encodeCrypto(value, algorithm));

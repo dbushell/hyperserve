@@ -2,13 +2,10 @@ import type {Cookie} from '@std/http/cookie';
 import type * as VelociRouter from '@ssr/velocirouter';
 import type {Props} from '@dbushell/hypermore';
 
-/** Cookie map */
-export type CookieMap = Map<string, Cookie>;
-
 /** Router platform */
 export type Platform = {
   info: Deno.ServeHandlerInfo;
-  cookies: CookieMap;
+  cookies: Map<string, Cookie>;
   deployHash: string;
   globalProps: Props;
 };

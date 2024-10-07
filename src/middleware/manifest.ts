@@ -5,6 +5,9 @@ import * as path from '@std/path';
 import {importRoute} from '../routes.ts';
 import {serverFetch} from '../fetch.ts';
 
+/**
+ * Middleware to load server routes
+ */
 export default async (server: Hyperserve) => {
   const routeDir = path.resolve(server.dir, 'routes');
   if (fs.existsSync(routeDir) === false) {

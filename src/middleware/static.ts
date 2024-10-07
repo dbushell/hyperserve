@@ -1,11 +1,14 @@
 import type {Hyperserve} from '../mod.ts';
+import * as fs from '@std/fs';
 import * as path from '@std/path';
-import {existsSync} from '@std/fs';
 import {serveDir} from '@std/http/file-server';
 
-export default (server: Hyperserve) => {
+/**
+ * Middleware to serve static assets
+ */
+export default (server: Hyperserve): void => {
   const staticDir = path.resolve(server.dir, 'static');
-  if (!existsSync(staticDir)) {
+  if (fs.existsSync(staticDir) === false) {
     console.warn(`Missing static directory: "${staticDir}"`);
     return;
   }

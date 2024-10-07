@@ -1,9 +1,16 @@
 import type {Hyperserve} from '../mod.ts';
 import {requestMap} from './shared.ts';
 
-export default (server: Hyperserve) => {
+/**
+ * Middleware to handle proxy servers
+ */
+export default (server: Hyperserve): void => {
   server.router.use(({request, response, stopPropagation}) => {
-    if (requestMap.get(request)?.ignore) return response;
+    // Skip ignored requests
+    if (requestMap.get(request)?.ignore) {
+      return response;
+    }
+    // Flag websocket requests to ignore
     if (request.headers.get('upgrade') === 'websocket') {
       requestMap.set(request, {ignore: true});
       return response;

@@ -1,9 +1,9 @@
 import * as cookie from '@std/http/cookie';
-import type {CookieMap} from './types.ts';
+import type {Cookie} from '@std/http/cookie';
 
-export default class Cookies implements CookieMap {
+export default class Cookies {
   #set: Set<string> = new Set();
-  #map: CookieMap = new Map();
+  #map: Map<string, Cookie> = new Map();
 
   constructor(headers: Headers) {
     for (const [name, value] of Object.entries(cookie.getCookies(headers))) {
@@ -42,7 +42,7 @@ export default class Cookies implements CookieMap {
     return this.#map.entries();
   }
 
-  forEach(...args: Parameters<CookieMap['forEach']>): void {
+  forEach(...args: Parameters<Map<string, Cookie>['forEach']>): void {
     return this.#map.forEach(...args);
   }
 
@@ -58,7 +58,7 @@ export default class Cookies implements CookieMap {
     return this.#map.keys();
   }
 
-  set(name: string, cookie: cookie.Cookie) {
+  set(name: string, cookie: Cookie) {
     cookie.name = name;
     this.#set.add(name);
     this.#map.set(name, cookie);

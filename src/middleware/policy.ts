@@ -1,6 +1,7 @@
 import type {Hyperserve} from '../mod.ts';
 import {requestMap} from './shared.ts';
 
+/** Default content security policies */
 const defaultPolicies = {
   'child-src': ["'self'"],
   'connect-src': ["'self'"],
@@ -20,6 +21,9 @@ const defaultPolicies = {
   'form-action': ["'self'"]
 };
 
+/**
+ * Merge default CSP with `x-[policy]` response headers
+ */
 const getPolicies = (response: Response) => {
   // @ts-ignore: all properties will be set
   const csp: typeof defaultPolicies = {};
@@ -42,7 +46,10 @@ const getPolicies = (response: Response) => {
   return csp;
 };
 
-export default (server: Hyperserve) => {
+/**
+ * Middleware to handle CSP headers
+ */
+export default (server: Hyperserve): void => {
   server.router.all(new URLPattern({}), ({request, response}) => {
     try {
       if (requestMap.get(request)?.ignore) return response;
