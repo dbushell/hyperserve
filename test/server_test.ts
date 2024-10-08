@@ -60,17 +60,6 @@ Deno.test('500 custom template', async () => {
   console.error = consoleError;
 });
 
-if (Deno.env.has('ORIGIN')) {
-  Deno.test('origin', async () => {
-    const originURL = new URL('/origin', origin);
-    const response = await fetch(originURL, {headers});
-    const data = await response.json();
-    assertEquals(new URL(data.url).href, originURL.href);
-    assertEquals(data['x-forwarded-host'], 'localhost');
-    assertEquals(data['x-forwarded-proto'], 'https');
-  });
-}
-
 Deno.test('text/html content-type', async () => {
   const response = await fetch(origin, {headers});
   await response.body?.cancel();
@@ -209,3 +198,25 @@ Deno.test('static asset', async () => {
   assertEquals(text, 'User-agent: * Allow: /');
   assert(response.headers.get('content-type')?.startsWith('text/plain'));
 });
+
+Deno.test('URL pattern', async () => {
+  const response = await fetch(new URL('/2024/03/02/slug/', origin), {headers});
+  const html = await response.text();
+  const root = parseHTML(html);
+  const node1 = root.find((n) => n.tag === 'h1');
+  const node2 = root.find((n) => n.tag === 'time');
+  assertEquals(response.status, 200);
+  assertEquals(node1?.children[0]?.toString(), 'slug');
+  assertEquals(node2?.children[0]?.toString(), '2024-03-02');
+});
+
+if (Deno.env.has('ORIGIN')) {
+  Deno.test('origin', async () => {
+    const originURL = new URL('/origin', origin);
+    const response = await fetch(originURL, {headers});
+    const data = await response.json();
+    assertEquals(new URL(data.url).href, originURL.href);
+    assertEquals(data['x-forwarded-host'], 'localhost');
+    assertEquals(data['x-forwarded-proto'], 'https');
+  });
+}

@@ -1,6 +1,6 @@
 # 🛸 Hyperserve
 
-Experimental web framework.
+A minimal web framework.
 
 ⚠️ **Work in progress!** ⚠️
 

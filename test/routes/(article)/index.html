@@ -1,0 +1,10 @@
+<ssr-script context="module">
+  export const pattern = '/:year(\\d+)/:month(\\d+)/:day(\\d+)/:slug/';
+
+  export const load = ({params, globalProps}) => {
+    globalProps.params = {...params};
+  };
+</ssr-script>
+
+<h1>{{params.slug}}</h1>
+<time>{{params.year}}-{{params.month}}-{{params.day}}</time>
