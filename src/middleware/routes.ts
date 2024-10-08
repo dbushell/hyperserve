@@ -156,7 +156,8 @@ export default async (server: Hyperserve) => {
   routes.forEach((route) => {
     server.manifest.routes.push(route);
     const input = new URLPattern({pathname: route.pattern});
-    server.router.get(input, async (props) => {
+    const key = route.method.toLowerCase() as Lowercase<Route['method']>;
+    server.router[key](input, async (props) => {
       const render = await route.render(props);
       const {response} = await Promise.resolve(
         server.router.resolve(props.request, render.response)
