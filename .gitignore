@@ -11,4 +11,5 @@
 !src
 !src/**/*.ts
 !test
-!test/*.ts
+!test/**/*.ts
+!test/**/*.html

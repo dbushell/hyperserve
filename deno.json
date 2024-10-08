@@ -11,6 +11,9 @@
   "lint": {
     "include": ["**/*.ts"]
   },
+  "tasks": {
+    "test": "ORIGIN=https://localhost deno test --allow-env --allow-net --allow-read --allow-run"
+  },
   "imports": {
     "@dbushell/hyperless": "jsr:@dbushell/hyperless@^0.18.0",
     "@dbushell/hypermore": "jsr:@dbushell/hypermore@^0.5.0",

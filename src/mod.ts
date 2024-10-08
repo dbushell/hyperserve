@@ -120,7 +120,7 @@ export class Hyperserve {
     // Setup route
     this.#router = new VelociRouter<Platform>({
       onError: (error) => {
-        console.log(error);
+        console.error(error);
         return new Response(null, {status: 500});
       }
     });
