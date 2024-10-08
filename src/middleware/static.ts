@@ -7,7 +7,8 @@ import {serveDir} from '@std/http/file-server';
  * Middleware to serve static assets
  */
 export default (server: Hyperserve): void => {
-  const staticDir = path.resolve(server.dir, 'static');
+  if (server.options.static === undefined) return;
+  const staticDir = path.resolve(server.dir, server.options.static);
   if (fs.existsSync(staticDir) === false) {
     console.warn(`Missing static directory: "${staticDir}"`);
     return;

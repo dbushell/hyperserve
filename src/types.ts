@@ -21,6 +21,7 @@ export type Options = {
   deployHash?: string;
   dev?: boolean;
   origin?: URL;
+  static?: string;
   serve?: Deno.ServeOptions;
   rejectionHandled?: (error: PromiseRejectionEvent) => void;
   unhandledRejection?: (error: PromiseRejectionEvent) => void;
