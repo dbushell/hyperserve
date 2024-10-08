@@ -26,10 +26,15 @@ export type Options = {
   unhandledRejection?: (error: PromiseRejectionEvent) => void;
 };
 
-/** Hyperserve render */
-export type Render = (
+/** Hyperserve render response */
+export type RenderResponse = {
+  response: ReturnType<Handle>;
+};
+
+/** Hyperserve render function */
+export type RenderFunction = (
   ...args: Parameters<Handle>
-) => ReturnType<Handle> | Promise<ReturnType<Handle>>;
+) => RenderResponse | Promise<RenderResponse>;
 
 /** Hyperserve route load props */
 export type RouteLoadProps = Platform & {
@@ -40,8 +45,14 @@ export type RouteLoadProps = Platform & {
 
 /** Hyperserve route module */
 export type RouteModule = {
-  pattern?: string;
   load?: (props: RouteLoadProps) => Promise<Response | void>;
+  order?: number;
+  pattern?: string;
+  DELETE?: Handle;
+  GET?: Handle;
+  PATCH?: Handle;
+  POST?: Handle;
+  PUT?: Handle;
 };
 
 /** Hyperserve route */
@@ -49,7 +60,7 @@ export type Route = {
   hash: string;
   method: VelociRouter.Method;
   pattern: string;
-  render: Render;
+  render: RenderFunction;
   order?: number;
   load?: (props: RouteLoadProps) => Promise<Response | void>;
 };

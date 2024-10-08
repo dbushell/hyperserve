@@ -90,7 +90,7 @@ export class Hyperserve {
     if (this.initialized) return;
     this.#initialized = true;
 
-    const start = performance.now();
+    performance.mark('init-start');
 
     globalThis.addEventListener(
       'unhandledrejection',
@@ -127,15 +127,21 @@ export class Hyperserve {
 
     // Setup middleware
     const builtin = [
-      middleware.template,
+      middleware.templates,
       middleware.proxy,
       middleware.static,
-      middleware.manifest,
+      middleware.routes,
       middleware.redirect,
       middleware.policy
     ];
     for (const callback of builtin) {
       await Promise.resolve(callback(this));
+    }
+
+    if (this.dev) {
+      for (const route of this.manifest.routes) {
+        console.log(`🪄 ${route.method} → ${route.pattern}`);
+      }
     }
 
     // Setup server
@@ -168,9 +174,13 @@ export class Hyperserve {
       );
     });
 
+    performance.mark('init-end');
+
     if (this.dev) {
-      const time = (performance.now() - start).toFixed(2);
-      console.log(`🚀 Server ${time}ms (${this.deployHash})`);
+      const time = performance.measure('init', 'init-start', 'init-end');
+      console.log(
+        `🛸 Hyperserve ${time.duration.toFixed(2)}ms (${this.deployHash})`
+      );
       if (this.origin) console.log(this.origin.href);
     }
   }
