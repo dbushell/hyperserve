@@ -1,4 +1,4 @@
-import type {HyperPlatform, Manifest, Options} from './types.ts';
+import type {HyperPlatform, HyperManifest, HyperOptions} from './types.ts';
 import {Hypermore} from '@dbushell/hypermore';
 import {Router} from '@ssr/velocirouter';
 import * as path from '@std/path';
@@ -10,16 +10,16 @@ export class Hyperserve {
   #initialized = false;
   #dir: string;
   #hypermore!: Hypermore;
-  #manifest!: Manifest;
-  #options: Options;
+  #manifest!: HyperManifest;
+  #options: HyperOptions;
   #router!: Router<HyperPlatform>;
   #server!: Deno.HttpServer;
 
-  constructor(dir?: string, options: Options = {}) {
+  constructor(dir?: string, options: HyperOptions = {}) {
     // Ensure absolute path
     this.#dir = path.resolve(dir ?? Deno.cwd(), './');
     // Setup options
-    const defaultOptions: Options = {
+    const defaultOptions: HyperOptions = {
       origin: Deno.env.has('ORIGIN')
         ? new URL(Deno.env.get('ORIGIN')!)
         : undefined,
@@ -55,11 +55,11 @@ export class Hyperserve {
     return this.#initialized;
   }
 
-  get manifest(): Manifest {
+  get manifest(): HyperManifest {
     return this.#manifest;
   }
 
-  get options(): Options {
+  get options(): HyperOptions {
     return this.#options;
   }
 

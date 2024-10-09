@@ -14,7 +14,7 @@ export type HyperPlatform = {
 export type HyperHandle = Handle<HyperPlatform>;
 
 /** Hyperserve instance options */
-export type Options = {
+export type HyperOptions = {
   deployHash?: string;
   dev?: boolean;
   origin?: URL;
@@ -64,7 +64,7 @@ export type Route = {
 };
 
 /** Hyperserve manifest */
-export type Manifest = {
+export type HyperManifest = {
   deployHash: string;
   routes: Array<Route>;
 };
