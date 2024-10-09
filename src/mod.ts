@@ -1,6 +1,6 @@
-import type {Manifest, Options, Platform, Router} from './types.ts';
-import {Router as VelociRouter} from '@ssr/velocirouter';
+import type {HyperPlatform, Manifest, Options} from './types.ts';
 import {Hypermore} from '@dbushell/hypermore';
+import {Router} from '@ssr/velocirouter';
 import * as path from '@std/path';
 import Cookies from './cookies.ts';
 import {encodeHash} from './utils.ts';
@@ -12,7 +12,7 @@ export class Hyperserve {
   #hypermore!: Hypermore;
   #manifest!: Manifest;
   #options: Options;
-  #router!: Router;
+  #router!: Router<HyperPlatform>;
   #server!: Deno.HttpServer;
 
   constructor(dir?: string, options: Options = {}) {
@@ -72,7 +72,7 @@ export class Hyperserve {
     return this.#hypermore;
   }
 
-  get router(): Router {
+  get router(): Router<HyperPlatform> {
     if (!this.initialized) throw new Error('Not initialized');
     return this.#router;
   }
@@ -91,7 +91,9 @@ export class Hyperserve {
     if (this.initialized) return;
     this.#initialized = true;
 
-    performance.mark('init-start');
+    if (this.dev) {
+      performance.mark('init-start');
+    }
 
     globalThis.addEventListener(
       'unhandledrejection',
@@ -119,8 +121,9 @@ export class Hyperserve {
     this.#hypermore = new Hypermore();
 
     // Setup route
-    this.#router = new VelociRouter<Platform>({
-      onError: (error) => {
+    this.#router = new Router<HyperPlatform>({
+      // deno-lint-ignore no-explicit-any
+      onError: (error: any) => {
         console.error(error);
         return new Response(null, {status: 500});
       }
@@ -149,8 +152,11 @@ export class Hyperserve {
     this.#server = Deno.serve(
       this.options.serve ?? {},
       async (request, info) => {
+        if (this.dev) {
+          performance.mark('request-start');
+        }
         const cookies = new Cookies(request.headers);
-        const platform: Platform = {
+        const platform: HyperPlatform = {
           info,
           cookies,
           deployHash: this.deployHash,
@@ -159,6 +165,15 @@ export class Hyperserve {
         Object.freeze(platform);
         const response = await this.router.handle(request, platform);
         cookies.headers(response);
+        if (this.dev && request.url.endsWith('/')) {
+          performance.mark('request-end');
+          const time = performance.measure(
+            'request',
+            'request-start',
+            'request-end'
+          );
+          console.log(`🛸 ${time.duration.toFixed(2)}ms (${request.url})`);
+        }
         return response;
       }
     );
@@ -175,9 +190,8 @@ export class Hyperserve {
       );
     });
 
-    performance.mark('init-end');
-
     if (this.dev) {
+      performance.mark('init-end');
       const time = performance.measure('init', 'init-start', 'init-end');
       console.log(
         `🛸 Hyperserve ${time.duration.toFixed(2)}ms (${this.deployHash})`

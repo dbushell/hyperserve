@@ -1,5 +1,5 @@
 import type {
-  Handle,
+  HyperHandle,
   Route,
   RenderFunction,
   RouteLoadProps,
@@ -83,7 +83,7 @@ export default async (server: Hyperserve) => {
     // Add JavaScript module routes
     if (jsExtensions.has(ext)) {
       routeMethods.forEach((method) => {
-        const handle = mod[method as keyof RouteModule] as Handle;
+        const handle = mod[method as keyof RouteModule] as HyperHandle;
         if (typeof handle !== 'function') return;
         routes.push({
           method,
@@ -169,7 +169,7 @@ export default async (server: Hyperserve) => {
 };
 
 const addError = (server: Hyperserve, route: Route) => {
-  const handle: Handle = async (props) => {
+  const handle: HyperHandle = async (props) => {
     const render = await route.render(props);
     return server.router.resolve(props.request, render.response);
   };
@@ -201,7 +201,7 @@ const addError = (server: Hyperserve, route: Route) => {
 };
 
 const addNoMatch = (server: Hyperserve, route: Route) => {
-  const handle: Handle = async (props) => {
+  const handle: HyperHandle = async (props) => {
     const render = await route.render(props);
     return server.router.resolve(props.request, render.response);
   };

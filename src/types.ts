@@ -1,20 +1,17 @@
 import type {Cookie} from '@std/http/cookie';
-import type * as VelociRouter from '@ssr/velocirouter';
+import type {Handle, Method} from '@ssr/velocirouter';
 import type {Props} from '@dbushell/hypermore';
 
 /** Router platform */
-export type Platform = {
+export type HyperPlatform = {
   info: Deno.ServeHandlerInfo;
   cookies: Map<string, Cookie>;
   deployHash: string;
   platformProps: Props;
 };
 
-/** Router handle */
-export type Handle = VelociRouter.Handle<Platform>;
-
-/** Router instance */
-export type Router = VelociRouter.Router<Platform>;
+/** Hyperserve handle */
+export type HyperHandle = Handle<HyperPlatform>;
 
 /** Hyperserve instance options */
 export type Options = {
@@ -29,16 +26,16 @@ export type Options = {
 
 /** Hyperserve render response */
 export type RenderResponse = {
-  response: ReturnType<Handle>;
+  response: ReturnType<HyperHandle>;
 };
 
 /** Hyperserve render function */
 export type RenderFunction = (
-  ...args: Parameters<Handle>
+  ...args: Parameters<HyperHandle>
 ) => RenderResponse | Promise<RenderResponse>;
 
 /** Hyperserve route load props */
-export type RouteLoadProps = Platform & {
+export type RouteLoadProps = HyperPlatform & {
   fetch: typeof fetch;
   params?: Record<string, string | undefined>;
   request: Request;
@@ -49,17 +46,17 @@ export type RouteModule = {
   load?: (props: RouteLoadProps) => Promise<Response | void>;
   order?: number;
   pattern?: string;
-  DELETE?: Handle;
-  GET?: Handle;
-  PATCH?: Handle;
-  POST?: Handle;
-  PUT?: Handle;
+  DELETE?: HyperHandle;
+  GET?: HyperHandle;
+  PATCH?: HyperHandle;
+  POST?: HyperHandle;
+  PUT?: HyperHandle;
 };
 
 /** Hyperserve route */
 export type Route = {
   hash: string;
-  method: VelociRouter.Method;
+  method: Method;
   pattern: string;
   render: RenderFunction;
   order?: number;

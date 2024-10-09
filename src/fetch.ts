@@ -1,9 +1,10 @@
-import type {Platform, Router} from './types.ts';
+import type {Router} from '@ssr/velocirouter';
+import type {HyperPlatform} from './types.ts';
 
 export const serverFetch = (
   request: Request,
-  router: Router,
-  platform: Platform
+  router: Router<HyperPlatform>,
+  platform: HyperPlatform
 ) => {
   return (...args: Parameters<typeof fetch>): ReturnType<typeof fetch> => {
     // Prevent infinite redirects
@@ -32,7 +33,7 @@ export const serverFetch = (
     // Local; pass request through router
     const newRequest = new Request(args[0], args[1]);
     newRequest.headers.set('x-fetch-depth', String(depth + 1));
-    const newPlatform: Platform = {
+    const newPlatform: HyperPlatform = {
       ...platform,
       platformProps: {}
     };
