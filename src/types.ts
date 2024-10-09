@@ -7,7 +7,7 @@ export type Platform = {
   info: Deno.ServeHandlerInfo;
   cookies: Map<string, Cookie>;
   deployHash: string;
-  globalProps: Props;
+  platformProps: Props;
 };
 
 /** Router handle */

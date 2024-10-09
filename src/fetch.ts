@@ -34,7 +34,7 @@ export const serverFetch = (
     newRequest.headers.set('x-fetch-depth', String(depth + 1));
     const newPlatform: Platform = {
       ...platform,
-      globalProps: {}
+      platformProps: {}
     };
     Object.freeze(newPlatform);
     return router.handle(newRequest, newPlatform);

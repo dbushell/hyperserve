@@ -1,0 +1,9 @@
+<ssr-script context="module">
+  export const load = ({params, platformProps}) => {
+    platformProps.number = 42;
+  };
+</ssr-script>
+
+<span id="hash">{{globalProps.deployHash}}</span>
+<span id="number1">{{number}}</span>
+<test-props number="777" />

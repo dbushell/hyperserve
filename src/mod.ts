@@ -154,7 +154,7 @@ export class Hyperserve {
           info,
           cookies,
           deployHash: this.deployHash,
-          globalProps: {}
+          platformProps: {}
         };
         Object.freeze(platform);
         const response = await this.router.handle(request, platform);

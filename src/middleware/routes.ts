@@ -121,11 +121,12 @@ export default async (server: Hyperserve) => {
         /** @todo pass url, pattern, and params? */
         const render = await server.hypermore.render(
           html,
-          {},
+          {
+            ...platform.platformProps
+          },
           {
             globalProps: {
-              deployHash: platform.deployHash,
-              ...platform.globalProps
+              deployHash: platform.deployHash
             }
           }
         );

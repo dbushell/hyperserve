@@ -82,6 +82,18 @@ Deno.test('<h1> rendered', async () => {
   assertEquals(node?.children[0]?.toString(), 'Test Heading');
 });
 
+Deno.test('props rendered', async () => {
+  const response = await fetch(new URL('/props', origin), {headers});
+  const html = await response.text();
+  const root = parseHTML(html);
+  const node0 = root.find((n) => n.attributes.get('id') === 'hash');
+  const node1 = root.find((n) => n.attributes.get('id') === 'number1');
+  const node2 = root.find((n) => n.attributes.get('id') === 'number2');
+  assertEquals(node0?.children[0]?.toString(), ssr.deployHash);
+  assertEquals(node1?.children[0]?.toString(), '42');
+  assertEquals(node2?.children[0]?.toString(), '777');
+});
+
 Deno.test('POST', async (test) => {
   const postURL = new URL('/methods/post', origin);
   await test.step('GET 404', async () => {

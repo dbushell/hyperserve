@@ -1,8 +1,8 @@
 <ssr-script context="module">
   export const pattern = '/:year(\\d+)/:month(\\d+)/:day(\\d+)/:slug/';
 
-  export const load = ({params, globalProps}) => {
-    globalProps.params = {...params};
+  export const load = ({params, platformProps}) => {
+    platformProps.params = {...params};
   };
 </ssr-script>
 
