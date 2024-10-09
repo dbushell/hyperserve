@@ -7,8 +7,11 @@ import {parseHTML} from '@dbushell/hypermore';
  * @param code JavaScript
  * @returns Module exports
  */
-export const importModule = async <T>(code: string): Promise<T> => {
-  const blob = new Blob([code], {type: 'text/javascript'});
+export const importModule = async <T>(
+  code: string,
+  type = 'text/typescript'
+): Promise<T> => {
+  const blob = new Blob([code], {type});
   const url = URL.createObjectURL(blob);
   const mod = await import(url);
   URL.revokeObjectURL(url);

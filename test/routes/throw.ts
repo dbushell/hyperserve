@@ -1,6 +1,6 @@
-import type {Handle} from '../../mod.ts';
+import type {HyperHandle} from 'jsr:@dbushell/hyperserve';
 
 // Purposefully throw an "Internal Server Error"
-export const GET: Handle = () => {
+export const GET: HyperHandle = () => {
   throw new Error('Throw 500');
 };

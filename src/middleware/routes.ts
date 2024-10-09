@@ -8,7 +8,7 @@ import type {
 import type {Hyperserve} from '../mod.ts';
 import * as fs from '@std/fs';
 import * as path from '@std/path';
-import {importRoute} from '../routes.ts';
+import {importModule, importRoute} from '../routes.ts';
 import {serverFetch} from '../fetch.ts';
 
 const htmlExtensions = new Set(['.html', '.ssr']);
@@ -47,13 +47,12 @@ export default async (server: Hyperserve) => {
     const hash = await server.hash(entry.path);
 
     // Import route module
-    let html = '';
     let mod: RouteModule;
+    const code = await Deno.readTextFile(entry.path);
     if (htmlExtensions.has(ext)) {
-      html = await Deno.readTextFile(entry.path);
-      mod = await importRoute(html);
+      mod = await importRoute(code);
     } else {
-      mod = (await import(entry.path)) as RouteModule;
+      mod = (await importModule(code)) as RouteModule;
     }
 
     // Configure route pattern
@@ -120,7 +119,7 @@ export default async (server: Hyperserve) => {
         headers.set('content-type', 'text/html; charset=utf-8');
         /** @todo pass url, pattern, and params? */
         const render = await server.hypermore.render(
-          html,
+          code,
           {
             ...platform.platformProps
           },

@@ -1,5 +1,5 @@
-import type {Handle} from '../../../mod.ts';
+import type {HyperHandle} from 'jsr:@dbushell/hyperserve';
 
-export const POST: Handle = async ({request}) => {
+export const POST: HyperHandle = async ({request}) => {
   return Response.json(await request.json());
 };

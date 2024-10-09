@@ -1,6 +1,6 @@
-import type {Handle} from '../../../mod.ts';
+import type {HyperHandle} from 'jsr:@dbushell/hyperserve';
 
-export const PATCH: Handle = ({request}) => {
+export const PATCH: HyperHandle = ({request}) => {
   return Response.json({
     method: request.method.toUpperCase()
   });
