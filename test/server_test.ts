@@ -94,6 +94,18 @@ Deno.test('props rendered', async () => {
   assertEquals(node2?.children[0]?.toString(), '777');
 });
 
+Deno.test('portal rendered', async () => {
+  const response = await fetch(new URL('/portal', origin), {headers});
+  const html = await response.text();
+  const root = parseHTML(html);
+  const n1 = root.find((n) => n.attributes.get('name') === 'deployHash');
+  const n2 = root.find((n) => n.tag === 'title');
+  const n3 = root.find((n) => n.tag === 'h1');
+  assertEquals(n1?.attributes.get('content'), ssr.deployHash);
+  assertEquals(n2?.children[0]?.toString(), ssr.deployHash);
+  assertEquals(n3?.children[0]?.toString(), ssr.deployHash);
+});
+
 Deno.test('POST', async (test) => {
   const postURL = new URL('/methods/post', origin);
   await test.step('GET 404', async () => {
