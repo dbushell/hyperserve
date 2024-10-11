@@ -1,5 +1,5 @@
-import * as cookie from '@std/http/cookie';
-import type {Cookie} from '@std/http/cookie';
+import * as cookie from "@std/http/cookie";
+import type { Cookie } from "@std/http/cookie";
 
 export default class Cookies {
   #set: Set<string> = new Set();
@@ -7,7 +7,7 @@ export default class Cookies {
 
   constructor(headers: Headers) {
     for (const [name, value] of Object.entries(cookie.getCookies(headers))) {
-      this.#map.set(name, {name, value});
+      this.#map.set(name, { name, value });
     }
   }
 
@@ -16,7 +16,7 @@ export default class Cookies {
   }
 
   get [Symbol.toStringTag]() {
-    return 'CookieMap';
+    return "CookieMap";
   }
 
   get size() {
@@ -31,9 +31,9 @@ export default class Cookies {
   delete(name: string) {
     this.set(name, {
       name,
-      value: '',
-      path: '/',
-      expires: new Date(0)
+      value: "",
+      path: "/",
+      expires: new Date(0),
     });
     return true;
   }
@@ -42,7 +42,7 @@ export default class Cookies {
     return this.#map.entries();
   }
 
-  forEach(...args: Parameters<Map<string, Cookie>['forEach']>): void {
+  forEach(...args: Parameters<Map<string, Cookie>["forEach"]>): void {
     return this.#map.forEach(...args);
   }
 

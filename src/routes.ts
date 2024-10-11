@@ -1,6 +1,6 @@
-import type {RouteModule} from './types.ts';
-import type {Node} from '@dbushell/hyperless';
-import {parseHTML} from '@dbushell/hypermore';
+import type { RouteModule } from "./types.ts";
+import type { Node } from "@dbushell/hyperless";
+import { parseHTML } from "@dbushell/hypermore";
 
 /**
  * Execute code and return module exports
@@ -9,9 +9,9 @@ import {parseHTML} from '@dbushell/hypermore';
  */
 export const importModule = async <T>(
   code: string,
-  type = 'text/typescript'
+  type = "text/typescript",
 ): Promise<T> => {
-  const blob = new Blob([code], {type});
+  const blob = new Blob([code], { type });
   const url = URL.createObjectURL(blob);
   const mod = await import(url);
   URL.revokeObjectURL(url);
@@ -29,9 +29,9 @@ export const importRoute = async (html: string): Promise<RouteModule> => {
   // Find the first top-level <ssr-script context="module">
   for (const node of root.children) {
     if (
-      node.tag === 'ssr-script' &&
+      node.tag === "ssr-script" &&
       node.size === 1 &&
-      node.attributes.get('context') === 'module'
+      node.attributes.get("context") === "module"
     ) {
       script = node;
       break;
@@ -40,16 +40,16 @@ export const importRoute = async (html: string): Promise<RouteModule> => {
   if (!script) return {};
   // Get the code and remove element wrapper
   let code = script.at(0)!.raw;
-  code = code.replace(/^\s*<script([^>]*>)/, '');
-  code = code.replace(/<\/script>\s*/, '');
+  code = code.replace(/^\s*<script([^>]*>)/, "");
+  code = code.replace(/<\/script>\s*/, "");
   // Import module and remove invalid exports
   const mod = {
-    ...(await importModule<RouteModule>(code))
+    ...(await importModule<RouteModule>(code)),
   };
-  if (typeof mod.pattern !== 'string') {
+  if (typeof mod.pattern !== "string") {
     delete mod.pattern;
   }
-  if (typeof mod.load !== 'function') {
+  if (typeof mod.load !== "function") {
     delete mod.load;
   }
   return mod;

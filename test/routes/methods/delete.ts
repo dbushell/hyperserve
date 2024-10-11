@@ -1,7 +1,7 @@
-import type {HyperHandle} from 'jsr:@dbushell/hyperserve';
+import type { HyperHandle } from "jsr:@dbushell/hyperserve";
 
-export const DELETE: HyperHandle = ({request}) => {
+export const DELETE: HyperHandle = ({ request }) => {
   return Response.json({
-    method: request.method.toUpperCase()
+    method: request.method.toUpperCase(),
   });
 };

@@ -1,7 +1,7 @@
-import type {HyperHandle} from 'jsr:@dbushell/hyperserve';
+import type { HyperHandle } from "jsr:@dbushell/hyperserve";
 
-export const PUT: HyperHandle = ({request}) => {
+export const PUT: HyperHandle = ({ request }) => {
   return Response.json({
-    method: request.method.toUpperCase()
+    method: request.method.toUpperCase(),
   });
 };

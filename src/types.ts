@@ -1,13 +1,13 @@
-import type {Cookie} from '@std/http/cookie';
-import type {Handle, Method} from '@ssr/velocirouter';
-import type {Props} from '@dbushell/hypermore';
+import type { Cookie } from "@std/http/cookie";
+import type { Handle, Method } from "@ssr/velocirouter";
+import type { JSONObject } from "@dbushell/hypermore";
 
 /** Router platform */
 export type HyperPlatform = {
   info: Deno.ServeHandlerInfo;
   cookies: Map<string, Cookie>;
   deployHash: string;
-  platformProps: Props;
+  platformProps: JSONObject;
 };
 
 /** Hyperserve handle */
@@ -19,7 +19,7 @@ export type HyperOptions = {
   dev?: boolean;
   origin?: URL;
   static?: string;
-  serve?: Deno.ServeOptions;
+  serve?: Deno.ServeTcpOptions;
   rejectionHandled?: (error: PromiseRejectionEvent) => void;
   unhandledRejection?: (error: PromiseRejectionEvent) => void;
 };
