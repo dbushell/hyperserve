@@ -122,8 +122,7 @@ export class Hyperserve {
 
     // Setup route
     this.#router = new Router<HyperPlatform>({
-      // deno-lint-ignore no-explicit-any
-      onError: (error: any) => {
+      onError: (error: unknown) => {
         console.error(error);
         return new Response(null, { status: 500 });
       },
