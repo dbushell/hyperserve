@@ -106,6 +106,15 @@ Deno.test("portal rendered", async () => {
   assertEquals(n3?.children[0]?.toString(), ssr.deployHash);
 });
 
+Deno.test("wrappers rendered", async () => {
+  const response = await fetch(new URL("/wrappers", origin), { headers });
+  const html = await response.text();
+  const root = parseHTML(html);
+  const node = root.find((n) => n.tag === "h1");
+  console.log(root.toString());
+  assertEquals(node?.children[0]?.toString(), "Test Wrappers");
+});
+
 Deno.test("POST", async (test) => {
   const postURL = new URL("/methods/post", origin);
   await test.step("GET 404", async () => {
