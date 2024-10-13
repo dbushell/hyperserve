@@ -102,7 +102,7 @@ export default async (server: Hyperserve) => {
     if (htmlExtensions.has(ext)) {
       const render: RenderFunction = async ({ request, match, platform }) => {
         // Setup context and props
-        // const url = new URL(request.url);
+        const url = new URL(request.url);
         const params = match?.pathname?.groups ?? {};
         const loadProps: RouteLoadProps = {
           ...platform,
@@ -127,6 +127,7 @@ export default async (server: Hyperserve) => {
           },
           {
             globalProps: {
+              url: url.href,
               deployHash: platform.deployHash,
             },
           },
