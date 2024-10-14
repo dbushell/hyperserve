@@ -1,5 +1,8 @@
 # 🛸 Hyperserve
 
+[![JSR](https://jsr.io/badges/@dbushell/hyperserve?labelColor=98e6c8&color=333)](https://jsr.io/@dbushell/hyperserve)
+
+
 A minimal web framework.
 
 ⚠️ **Work in progress!** ⚠️

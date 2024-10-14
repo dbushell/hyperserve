@@ -121,9 +121,12 @@ Deno.test("forms rendered", async () => {
   const n1 = root.find((n) => n.attributes.get("id") === "input-1");
   const n2 = root.find((n) => n.attributes.get("id") === "input-2");
   const n3 = root.find((n) => n.attributes.get("id") === "input-3");
-  assertEquals(n1?.toString(), '<input id="input-1" hidden/>');
-  assertEquals(n2?.toString(), '<input id="input-2" disabled/>');
-  assertEquals(n3?.toString(), '<input id="input-3" disabled required/>');
+  assertEquals(n1?.toString(), '<input type="text" id="input-1" name="test"/>');
+  assertEquals(n2?.toString(), '<input type="text" id="input-2" disabled/>');
+  assertEquals(
+    n3?.toString(),
+    '<input type="text" id="input-3" disabled required/>',
+  );
 });
 
 Deno.test("POST", async (test) => {
