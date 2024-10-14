@@ -111,8 +111,19 @@ Deno.test("wrappers rendered", async () => {
   const html = await response.text();
   const root = parseHTML(html);
   const node = root.find((n) => n.tag === "h1");
-  console.log(root.toString());
   assertEquals(node?.children[0]?.toString(), "Test Wrappers");
+});
+
+Deno.test("forms rendered", async () => {
+  const response = await fetch(new URL("/forms", origin), { headers });
+  const html = await response.text();
+  const root = parseHTML(html);
+  const n1 = root.find((n) => n.attributes.get("id") === "input-1");
+  const n2 = root.find((n) => n.attributes.get("id") === "input-2");
+  const n3 = root.find((n) => n.attributes.get("id") === "input-3");
+  assertEquals(n1?.toString(), '<input id="input-1" hidden/>');
+  assertEquals(n2?.toString(), '<input id="input-2" disabled/>');
+  assertEquals(n3?.toString(), '<input id="input-3" disabled required/>');
 });
 
 Deno.test("POST", async (test) => {
