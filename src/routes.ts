@@ -26,11 +26,10 @@ export const importModule = async <T>(
 export const importRoute = async (html: string): Promise<RouteModule> => {
   const root = parseHTML(html);
   let script: Node | undefined;
-  // Find the first top-level <ssr-script context="module">
+  // Find the first top-level <script context="module">
   for (const node of root.children) {
     if (
-      node.tag === "ssr-script" &&
-      node.size === 1 &&
+      node.tag === "script" &&
       node.attributes.get("context") === "module"
     ) {
       script = node;
@@ -38,10 +37,7 @@ export const importRoute = async (html: string): Promise<RouteModule> => {
     }
   }
   if (!script) return {};
-  // Get the code and remove element wrapper
-  let code = script.at(0)!.raw;
-  code = code.replace(/^\s*<script([^>]*>)/, "");
-  code = code.replace(/<\/script>\s*/, "");
+  const code = script.at(0)!.raw;
   // Import module and remove invalid exports
   const mod = {
     ...(await importModule<RouteModule>(code)),

@@ -1,8 +1,8 @@
-<ssr-script context="module">
+<script context="module">
   export const load = ({params, platformProps}) => {
     platformProps.number = 42;
   };
-</ssr-script>
+</script>
 
 <span id="hash">{{$global.deployHash}}</span>
 <span id="number1">{{number}}</span>
