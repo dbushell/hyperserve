@@ -50,9 +50,9 @@ export default async (server: Hyperserve) => {
 
     // Import route module
     let mod: RouteModule;
-    const code = await Deno.readTextFile(entry.path);
+    let code = await Deno.readTextFile(entry.path);
     if (htmlExtensions.has(ext)) {
-      mod = await importRoute(code);
+      [code, mod] = await importRoute(code);
     } else {
       mod = (await importModule(code)) as RouteModule;
     }

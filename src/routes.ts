@@ -23,20 +23,24 @@ export const importModule = async <T>(
  * @param html Route template
  * @returns Route module
  */
-export const importRoute = async (html: string): Promise<RouteModule> => {
+export const importRoute = async (
+  html: string,
+): Promise<[string, RouteModule]> => {
   const root = parseHTML(html);
   let script: Node | undefined;
   // Find the first top-level <script context="module">
   for (const node of root.children) {
-    if (
-      node.tag === "script" &&
-      node.attributes.get("context") === "module"
-    ) {
-      script = node;
-      break;
-    }
+    if (node.tag !== "script") continue;
+    if (node.attributes.get("context") !== "module") continue;
+    script = node;
+    break;
   }
-  if (!script) return {};
+  // Return default if not found
+  if (script === undefined) {
+    return [html, {}];
+  }
+  // Extract script
+  script.detach();
   const code = script.at(0)!.raw;
   // Import module and remove invalid exports
   const mod = {
@@ -48,5 +52,5 @@ export const importRoute = async (html: string): Promise<RouteModule> => {
   if (typeof mod.load !== "function") {
     delete mod.load;
   }
-  return mod;
+  return [root.toString(), mod];
 };
