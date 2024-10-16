@@ -54,7 +54,8 @@ export default async (server: Hyperserve) => {
     if (htmlExtensions.has(ext)) {
       [code, mod] = await importRoute(code);
     } else {
-      mod = (await importModule(code)) as RouteModule;
+      const type = `text/${ext === ".js" ? "java" : "type"}script`;
+      mod = (await importModule(code, type)) as RouteModule;
     }
 
     // Configure route pattern
