@@ -119,7 +119,10 @@ export default async (server: Hyperserve) => {
         }
         const headers = new Headers();
         headers.set("content-type", "text/html; charset=utf-8");
-        /** @todo pass url, pattern, and params? */
+        // if (!server.hypermore.hasTemplate(`tmp-${hash}`)) {
+        //   server.hypermore.setTemplate(`tmp-${hash}`, code);
+        // }
+        // `<tmp-${hash} />`,
         const render = await server.hypermore.render(
           code,
           {
