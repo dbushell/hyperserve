@@ -2,8 +2,7 @@
 
 [![JSR](https://jsr.io/badges/@dbushell/hyperserve?labelColor=98e6c8&color=333)](https://jsr.io/@dbushell/hyperserve)
 
-
-A minimal web framework.
+A minimal Deno web server for [Hypermore](https://github.com/dbushell/hypermore).
 
 ⚠️ **Work in progress!** ⚠️
 
