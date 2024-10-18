@@ -1,6 +1,6 @@
 {
   "name": "@dbushell/hyperserve",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "exports": {
     ".": "./mod.ts"
   },
@@ -16,7 +16,7 @@
   },
   "imports": {
     "@dbushell/hyperless": "jsr:@dbushell/hyperless@^0.24.0",
-    "@dbushell/hypermore": "jsr:@dbushell/hypermore@^0.23.0",
+    "@dbushell/hypermore": "jsr:@dbushell/hypermore@^0.24.0",
     "@ssr/velocirouter": "jsr:@ssr/velocirouter@^0.12.0",
     "@std/crypto": "jsr:@std/crypto@^1.0.3",
     "@std/encoding": "jsr:@std/encoding@^1.0.5",
